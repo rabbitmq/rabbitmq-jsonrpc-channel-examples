@@ -11,6 +11,7 @@ start(_Type, _StartArgs) ->
     {ok, spawn(fun loop/0)}.
 
 stop(_State) ->
+    rabbit_mochiweb:unregister_context(jsonrpc_examples),
     ok.
 
 loop() ->
