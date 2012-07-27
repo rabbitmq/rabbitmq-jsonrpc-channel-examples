@@ -104,7 +104,8 @@ function testMain() {
 					 channel.basicCancel(ctag)
 					 .addCallback(function (x) {
 							  log({cancelled: x});
-							  channel.basicPublish("", queue, "Two");
+                                                          channel.basicPublish("", queue, "Two");
+                                                          log({finished: "tests passed"});
 						      });
 				     }
 				 },
