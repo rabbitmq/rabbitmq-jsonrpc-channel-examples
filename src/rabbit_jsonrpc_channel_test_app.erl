@@ -21,6 +21,7 @@
 
 start(_Type, _StartArgs) ->
     {ok, _} = rabbit_mochiweb:register_static_context(jsonrpc_examples,
+                                                      rabbit_jsonrpc:listener(),
                                                       "rpc-examples", ?MODULE,
                                                       "priv/www-examples",
                                                       "JSON-RPC: examples"),
