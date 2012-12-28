@@ -19,19 +19,21 @@
 -behaviour(application).
 -export([start/2,stop/1]).
 
+%% Dummy supervisor - see Ulf Wiger's comment at
+%% http://erlang.2086793.n4.nabble.com/initializing-library-applications-without-processes-td2094473.html
+-behaviour(supervisor).
+-export([init/1]).
+
 start(_Type, _StartArgs) ->
     {ok, _} = rabbit_mochiweb:register_static_context(jsonrpc_examples,
                                                       rabbit_jsonrpc:listener(),
                                                       "rpc-examples", ?MODULE,
                                                       "priv/www-examples",
                                                       "JSON-RPC: examples"),
-    {ok, spawn(fun loop/0)}.
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 stop(_State) ->
     rabbit_mochiweb:unregister_context(jsonrpc_examples),
     ok.
 
-loop() ->
-  receive
-    _ -> loop()
-  end.
+init([]) -> {ok, {{one_for_one, 3, 10}, []}}.
