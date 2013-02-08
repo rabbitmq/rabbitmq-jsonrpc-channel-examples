@@ -25,7 +25,7 @@
 -export([init/1]).
 
 start(_Type, _StartArgs) ->
-    {ok, _} = rabbit_mochiweb:register_static_context(jsonrpc_examples,
+    {ok, _} = rabbit_web_dispatch:register_static_context(jsonrpc_examples,
                                                       rabbit_jsonrpc:listener(),
                                                       "rpc-examples", ?MODULE,
                                                       "priv/www-examples",
@@ -33,7 +33,7 @@ start(_Type, _StartArgs) ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 stop(_State) ->
-    rabbit_mochiweb:unregister_context(jsonrpc_examples),
+    rabbit_web_dispatch:unregister_context(jsonrpc_examples),
     ok.
 
 init([]) -> {ok, {{one_for_one, 3, 10}, []}}.
